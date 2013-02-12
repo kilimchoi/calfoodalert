@@ -1,123 +1,16 @@
-@background-color: #f1f1f1;
-@text: #444444;
-@lighter: #666666;
-@highlight: #449644;
-@highlight-light: #669666;
+/* Variables */
+
+@light: #f1f1f1;
+@dark: #444444;
+@dark-light: #666666;
+@color: #449644;
+@color-light: #669666;
+@width: 796px;
 @font: 'Source Sans Pro', sans-serif;
 @footer-height: 60px;
 @page-bottom: @footer-height + 30px;
 
-body {
-	font-family: @font;
-	color: @text;
-	width:796px;
-	height:100%;
-	background-color: @background-color;
-	margin:0 auto;
-}
-
-a {
-	color:@text;
-	&:hover {
-		color:@lighter;
-	}
-}
-
-input[type=submit] {
-	background-color:@highlight;
-	color:@background-color;
-	border-width:0px;
-	&:hover {
-		background-color:@highlight-light;
-	}
-}
-
-section#favorites > div {
-	width: 796px;
-	height: 100%;
-	margin-bottom: @page-bottom;
-	columns: 390px 2;
-	-webkit-columns:390px 2; /* Safari and Chrome */
-	-moz-columns:390px 2; /* Firefox */
-}
-
-#favorites div.selection {
-		width: 380px;
-		padding: 10px;
-	input {
-		width:30px;
-	}
-	&:nth-child(2n) {
-		background-color:@lighter;
-		color:@background-color;
-	}
-}
-
-header {
-	width:796px;
-	position:relative;
-	margin-bottom:40px;
-}
-
-.auth-info {
-	a {
-		color:@highlight;
-		&:hover {
-			color:@highlight-light;
-		}
-	}
-	position:absolute;
-	top:10px;
-	right:10px;
-}
-
-section#splash {
-	width:796px;
-	p {
-		float:right;
-		width:400px;
-		font-size:24px;
-		padding-top:170px;
-	}
-	img {
-		float:left;
-	}
-	.button {
-		float:right;
-		background-color:@highlight;
-		font-size:24px;
-		padding:10px 20px;
-		a {
-			color:@background-color;
-			text-decoration:none;
-			padding:10px 15px;
-		}
-		&:hover {
-			background-color:@highlight-light;
-		}
-	}
-}
-
-footer {
-	position:fixed;
-	width:100%;
-	height:@footer-height;
-	bottom:0px;
-	left:0px;
-	text-align: right;
-	line-height: @footer-height;
-	
-	background-color:@highlight;
-	a {
-		text-decoration: none;
-		font-size:24px;
-		color:@background-color;
-		margin-right:30px;
-		&:hover {
-			color:@background-color;
-		}
-	}
-}
+/* Mixins */
 
 .overlay-mixin {
 	width: 0px;
@@ -139,6 +32,153 @@ footer {
 	padding-top:90px;
 }
 
+.footer-mixin {
+	position:fixed;
+	width:100%;
+	height:@footer-height;
+	bottom:0px;
+	left:0px;
+}
+
+.section-mixin {
+	width: @width;
+	height: 100%;
+	margin-bottom: @page-bottom;
+	
+}
+
+.button-mixin {
+	background-color:@color;
+	font-size:24px;
+	padding:10px 20px;
+	a {
+		color:@light;
+		text-decoration:none;
+		padding:10px 15px;
+	}
+	&:hover {
+		background-color:@color-light;
+	}
+}
+
+/* General */
+
+body {
+	font-family: @font;
+	color: @dark;
+	width:796px;
+	height:100%;
+	background-color: @light;
+	margin:0 auto;
+}
+
+a {
+	color:@dark;
+	&:hover {
+		color:@dark-light;
+	}
+}
+
+input[type=submit] {
+	background-color:@color;
+	color:@light;
+	border-width:0px;
+	&:hover {
+		background-color:@color-light;
+	}
+}
+
+.auth-info {
+	a {
+		color:@color;
+		&:hover {
+			color:@color-light;
+		}
+	}
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+
+/* Page specific */
+
+header {
+	width: @width;
+	position:relative;
+	margin-bottom:40px;
+}
+
+section#landing {
+	.section-mixin;
+	p {
+		float:right;
+		width:400px;
+		font-size:24px;
+		padding-top:170px;
+	}
+	img {
+		float:left;
+	}
+	.button {
+		.button-mixin;
+		float:right;
+	}
+}
+
+section#favorites {
+	.section-mixin;
+
+	#fav_search {
+		width: @width * 6 / 7;
+		font-size:36px;
+	}
+	
+	#search_button {
+		width: @width / 7 - 10;
+		font-size: 32px;
+	}
+
+	#chosen_fav {
+
+	}
+}
+
+footer.fav {
+	.footer-mixin;
+	line-height: 24px;
+	background-color:@color;
+	a {
+		text-decoration: none;
+		font-size:24px;
+		color:@light;
+		margin-right:30px;
+		&:hover {
+			color:@light;
+		}
+	}
+	div {
+		text-align:right;
+		width:@width;
+		height:100%;
+		margin:0 auto;
+	}
+}
+
+footer.index {
+	.footer-mixin;
+	background-color: @dark-light;
+	color:@dark;
+	div {
+		text-align:right;
+		line-height:@footer-height;
+		width:@width;
+		height:100%;
+		margin:0 auto;
+	}
+}
+
+/* Subpages */
+
 #login, 
 #register, 
 #verify {
@@ -158,7 +198,7 @@ footer {
 		width: 400px;
 		margin: 0px auto 0px auto;
 		padding: 10px;
-		background-color:@background-color;
+		background-color:@light;
 		overflow:hidden;
 		-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
 		-moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
