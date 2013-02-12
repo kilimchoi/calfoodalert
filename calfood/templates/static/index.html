@@ -9,7 +9,7 @@
 	<link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro' type='text/css'>
 	<link rel='stylesheet' href="resources/css/normalize.css" type="text/css">
 	<link rel="stylesheet/less" href="resources/css/foodalert.less" type="text/css">
-
+	<title>CalFoodAlert</title>
 </head>
 <body>
 <header>
@@ -25,27 +25,33 @@
 </section>
 <div id="login">
 	<div>
+		<form name="login" method="POST">
 		<p class="cancel"><a href="#">X</a></p>
-		<input placeholder="(555) 555-5555" type="tel" required></input>
-		<input placeholder="password" type="password" required></input>
-		<input type="submit" value="login"></input>
+		<input placeholder="(555) 555-5555" type="tel" name="telephone" required></input>
+		<input placeholder="password" type="password" name="pwd" required></input>
+		<input type="submit" value="login" name="login"></input>
+		</form>
 	</div>
 </div>
 <div id="register">
 	<div>
+		<form name="register" method="POST">
 		<p class="cancel"><a href="#">X</a></p>
-		<input placeholder="(555) 555-5555" type="tel" required></input>
-		<input placeholder="password" type="password" required></input>
-		<input placeholder="repeat password" type="password" required></input>
-		<input type="submit" value="register"></input>
+		<input placeholder="(555) 555-5555" type="tel" name="telephone" required></input>
+		<input placeholder="password" type="password" name="pwd" required></input>
+		<input placeholder="repeat password" type="password" name="pwd_conf" required></input>
+		<input type="submit" value="register" name="register"></input>
+		</form>
 	</div>
 </div>
 <div id="verify">
 	<div>
+		<form name="verify" method="POST">
 		<p class="cancel"><a href="#">X</a></p>
 		<p>Check your phone for a code and enter it here.</p>
-		<input placeholder="123456" type="text" required></input>
-		<input type="submit" value="verify"></input>
+		<input placeholder="123456" type="text" name="code" required></input>
+		<input type="submit" value="verify" name="verify"></input>
+		</form>
 	</div>
 </div>
 
