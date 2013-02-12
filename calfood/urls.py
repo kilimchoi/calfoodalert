@@ -1,11 +1,14 @@
 from django.conf.urls import patterns, include, url
-from food.views import parse_page
+from food.views import parse_page, index, register
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+	('^index$', index),
+	('^index#register$', register),
 	('^parse_page', parse_page),
+
     # Examples:
     # url(r'^$', 'calfood.views.home', name='home'),
     # url(r'^calfood/', include('calfood.foo.urls')),

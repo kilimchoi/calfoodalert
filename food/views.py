@@ -12,7 +12,9 @@ from bs4 import BeautifulSoup
 import mechanize
 import urllib2
 
- 
+def index(request):
+	return render_to_response('static/index.html', '', context_instance=RequestContext(request))
+	
 def parse_page(request):
 	url = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
 	br = mechanize.Browser()
@@ -39,6 +41,9 @@ def parse_page(request):
 				counter += 1
 		place_list = []
 
+def register(request):
+
+	render_to_response(index.html)
 	
 
 def sendtext(request):
