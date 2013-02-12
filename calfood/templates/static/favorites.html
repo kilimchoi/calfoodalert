@@ -23,10 +23,8 @@
 </header>
 <section id="favorites">
 	<h2>Choose your favorites:</h2>
-	<form method="POST" name="favorites">
 	<input placeholder="begin typing your favorite foods here" type="search" name="fav" id="fav_search"></input>
-	<input type="submit" value="search" name="search" id="search_button" onclick="addFavorite(get('fav_search').value)"></input>
-	</form>
+	<input type="submit" value="search" name="search" id="search_button" onclick="addFavorite(get(fav_search).value)"></input>
 	<ul id="chosen_favorites">
 	</ul>
 </section>
