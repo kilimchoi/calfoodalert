@@ -8,7 +8,7 @@
 	<link rel="shortcut icon" href="{{ STATIC_URL }}/resources/img/favicon.ico" type="image/vnd.microsoft.icon"> 
 	<link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro' type='text/css'>
 	<link rel='stylesheet' href="{{ STATIC_URL }}/resources/css/normalize.css" type="text/css">
-	<link rel="stylesheet/less" href="{{ STATIC_URL }}resources/css/foodalert.less" type="text/css">
+	<link rel="stylesheet/less" href="{{ STATIC_URL }}/resources/css/foodalert.less" type="text/css">
 	<title>CalFoodAlert</title>
 </head>
 <body>
@@ -32,7 +32,7 @@
 	<div>
 		<form name="login" method="POST">	
 		{% csrf_token %}
-		{% if pwd_match %}Incorrect login, try again.{% endif %}
+		{% if pwd_match %}Incorrect login, please try again.{% endif %}
 		<p class="cancel"><a href="#">X</a></p>
 		<input placeholder="(555) 555-5555" type="tel" name="telephone" required></input>
 		<input placeholder="password" type="password" name="pwd" required></input>
@@ -57,6 +57,7 @@
 	<div>
 		<form name="verify" method="POST">
 		{% csrf_token %}
+		{% if verify_fail %}Incorrect code, please try again.{% endif %}
 		<p class="cancel"><a href="#">X</a></p>
 		<p>Check your phone for a code and enter it here.</p>
 		<input placeholder="123456" type="text" name="code" required></input>
