@@ -9,10 +9,27 @@ from googlevoice import Voice, util
 from googlevoice.util import input
 import re
 from bs4 import BeautifulSoup
+from models import User
+import random
+import string
 import mechanize
 import urllib2
 
- 
+def index(request):
+	dict = {'telephone_registered': False, 'pwd_match': False}
+	if request.method == "POST":
+		password = request.POST['pwd']
+		tele = request.POST['telephone']
+		user = User(telephone = tele, pwd = password, verified=False, ver_code=generate_random_code())
+		user.save()
+	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
+
+def generate_random_code():
+	lst = [random.choice(string.digits) for n in xrange(6)]
+	str = "".join(lst)
+	return str
+
+	
 def parse_page(request):
 	url = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
 	br = mechanize.Browser()
@@ -39,6 +56,9 @@ def parse_page(request):
 				counter += 1
 		place_list = []
 
+def register(request):
+
+	render_to_response(index.html)
 	
 
 def sendtext(request):
