@@ -7,6 +7,7 @@ from food.views import parse_page, index, register
 urlpatterns = patterns('',
 	('^index$', index),
 	('^index#register$', index),
+    ('^index#verify$', index),
 	('^parse_page', parse_page),
 
     # Examples:
