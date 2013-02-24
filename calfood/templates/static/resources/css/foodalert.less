@@ -21,7 +21,13 @@
 	top: 0px;
 	padding: 0px;
 	z-index: 99;
+	opacity: 0;
 	background: rgba(68,68,68,0.4);
+	-webkit-transition: opacity 0.3s ease;
+	-moz-transition: opacity 0.3s ease;
+	-o-transition: opacity 0.3s ease;
+	-ms-transition: opacity 0.3s ease;
+	transition: opacity 0.3s ease;
 }
 
 .overlay-target-mixin {
@@ -30,6 +36,7 @@
 	bottom: 0px;
 	right: 0px;
 	padding-top:90px;
+	opacity: 1;
 }
 
 .footer-mixin {
