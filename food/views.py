@@ -22,8 +22,13 @@ def index(request):
 	if request.method == "POST":
 		password = request.POST['pwd']
 		tele = request.POST['telephone']
-		user = User(telephone = tele, pwd = password, verified=False, ver_code=generate_random_code())
+		tele = tele.encode("utf8")
+		tele = int(tele)
+		password = password.encode("utf8")
+		password = int(password)
+		user = User(telephone = tele, password = password)
 		user.save()
+		user.get_profile().telephone = tele
 		user.set_password(user.pwd)
 	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
 

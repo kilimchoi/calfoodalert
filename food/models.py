@@ -2,17 +2,18 @@ from django.db import models
 from django.utils.encoding import smart_str
 from django.utils.hashcompat import sha_constructor
 import random
-from django.db.models.fields import IntegerField
+from django.db.models.fields import BigIntegerField
 from django.conf import settings
+from django.db.models.signals import post_save  
+from django.contrib.auth.models import User
 
-
-class BigIntegerField(IntegerField):
-    empty_strings_allowed=False
-    def get_internal_type(self):
-        return "BigIntegerField"	
-    def db_type(self):
-        return 'bigint' # Note this won't work with Oracle.
-
+class BigIntegerField(BigIntegerField):
+	empty_strings_allowed=False
+	def get_internal_type(self):
+		return "BigIntegerField"
+	
+	def db_type(self):
+		return 'NUMBER(19)' if settings.DATABASE_ENGINE == 'oracle' else 'bigint'
 def get_hexdigest(algorithm, salt, raw_password):
 		"""
 		Returns a string of the hexdigest of the given plaintext password and salt
@@ -30,17 +31,26 @@ def get_hexdigest(algorithm, salt, raw_password):
 		elif algorithm == 'sha1':
 			return sha_constructor(salt + raw_password).hexdigest()
 		raise ValueError("Got unknown password algorithm type in password.")
+ 
 
-class User(models.Model):
-	telephone = models.FloatField()
-	pwd = models.IntegerField()
+class UserProfile(models.Model):  
+	user = models.ForeignKey(User)
+	telephone = models.BigIntegerField()
 	verified = models.BooleanField()
-	ver_code = models.IntegerField()
+	verCode = models.CharField(max_length=6)
+	#other fields here
+	def __str__(self):  
+		return "%s's profile" % self.user  
+	def create_user_profile(sender, instance, created, **kwargs):  
+		if created:  
+			profile, created = UserProfile.objects.get_or_create(user=instance)  
 	def set_password(self, pwd):
 		algo='sha1'
 		salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
 		hsh = get_hexdigest(algo, salt, pwd)
 		self.pwd = '%s$%s$%s' % (algo, salt, hsh)
+	post_save.connect(create_user_profile, sender=User) 
+
 
 class Favs(models.Model):
 	user = models.ForeignKey(User)
