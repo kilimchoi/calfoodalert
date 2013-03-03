@@ -13,16 +13,17 @@ $(document).ready(function() {
 		$('#video_cover').hide();
 	});
 	$('.register').click(function() {
+		var $tele = $('#register .tele').val();
 		var $pwd = $('#register .pwd').val();
 		var $pwd_conf = $('#register .pwd_conf').val();
 		if ($tele.length < 10) {
-			$('#register .error').replaceWith("<p class="error">please enter a 10 digit phone number with only numbers</p>");
+			$('#register .error').replaceWith("<p class=\"error\">please enter a 10 digit phone number with only numbers</p>");
 		}
 		else if ($pwd != $pwd_conf) {
-			$('#register .error').replaceWith("<p class="error">passwords do not match</p>");
+			$('#register .error').replaceWith("<p class=\"error\">passwords do not match</p>");
 		} 
 		else if ($pwd.length < 6) {
-			$('#register .error').replaceWith("<p class="error">length</p>");
+			$('#register .error').replaceWith("<p class=\"error\">length</p>");
 		}
 		else {
 			location.href = "index#verify";			
@@ -32,7 +33,7 @@ $(document).ready(function() {
 
 function adjustSize() {
 	var width = $(window).width() - .3 * $(window).width();
-	var videoHeight = width/16*9;
+	var videoHeight = width/2.39;
 	var footerWidth = $(window).width();
 	$('#landing .video, body, header, #landing, #favorites, footer > div').width(width);
 	$('#landing .video').height(videoHeight);	
