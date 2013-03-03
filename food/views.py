@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 from datetime import datetime
 import pprint
 import json
@@ -16,12 +18,30 @@ import mechanize
 import urllib2
 
 def index(request):
-	dict = {'telephone_registered': False, 'pwd_match': False}
+	passwordMatch = False
+	passwordLength = False
+	dict = {}
 	if request.method == "POST":
 		password = request.POST['pwd']
 		tele = request.POST['telephone']
-		user = User(telephone = tele, pwd = password, verified=False, ver_code=generate_random_code())
+		tele = tele.encode("utf8")
+		tele = int(tele)
+		password = password.encode("utf8")
+		intPassword = int(password)
+		confirmPwd = request.POST['pwd_conf']
+		intConfirmPwd = int(confirmPwd)
+		if len(password) < 6:
+			passwordLength = False
+		if len(password) >= 6:
+			passwordLength = True
+		if intPassword != intConfirmPwd:
+			passwordMatch = False
+		if intPassword == intConfirmPwd:
+			passwordMatch = True
+		dict = {'telephone_registered': False, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+		user = User(telephone = tele, pwd= password, ver_code = generate_random_code())
 		user.save()
+		user.set_password(user.pwd)
 	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
 
 def generate_random_code():
@@ -29,6 +49,11 @@ def generate_random_code():
 	str = "".join(lst)
 	return str
 
+
+def reset_password(tele, new_pwd):
+	u = User.objects.get(telephone=tele)
+	u.set_password(tele, new_pwd)
+	u.save()
 	
 def parse_page(request):
 	url = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
@@ -57,7 +82,6 @@ def parse_page(request):
 		place_list = []
 
 def register(request):
-
 	render_to_response(index.html)
 	
 
