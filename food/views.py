@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -39,9 +39,13 @@ def index(request):
 		if intPassword == intConfirmPwd:
 			passwordMatch = True
 		dict = {'telephone_registered': False, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
-		user = User(telephone = tele, pwd= password, ver_code = generate_random_code())
-		user.save()
-		user.set_password(user.pwd)
+		if passwordMatch and passwordLength:
+			user = User(telephone = tele, pwd= password, ver_code = generate_random_code())
+			user.save()
+			user.set_password(user.pwd)
+			return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
+		else:
+			return HttpResponseRedirect("")
 	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
 
 def generate_random_code():

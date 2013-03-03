@@ -13,19 +13,20 @@ $(document).ready(function() {
 		$('#video_cover').hide();
 	});
 	$('.register').click(function() {
+		var $tele = $('#register .tele').val();
 		var $pwd = $('#register .pwd').val();
 		var $pwd_conf = $('#register .pwd_conf').val();
 		if ($tele.length < 10) {
-			$('#register .error').replaceWith("<p class="error">please enter a 10 digit phone number with only numbers</p>");
+			$('#register .error').replaceWith("<p class=\"error\">please enter a 10 digit phone number with only numbers</p>");
 		}
 		else if ($pwd != $pwd_conf) {
-			$('#register .error').replaceWith("<p class="error">passwords do not match</p>");
+			$('#register .error').replaceWith("<p class=\"error\">passwords do not match</p>");
 		} 
 		else if ($pwd.length < 6) {
-			$('#register .error').replaceWith("<p class="error">length</p>");
+			$('#register .error').replaceWith("<p class=\"error\">length</p>");
 		}
 		else {
-			location.href = "index#verify";			
+			location.href = "index#verify";	
 		}
 	});
 });
