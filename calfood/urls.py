@@ -5,6 +5,7 @@ from food.views import parse_page, index, register, favorites
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    ('^$', index),
 	('^index$', index),
 	('^index#register$', index),
     ('^index#verify$', index),

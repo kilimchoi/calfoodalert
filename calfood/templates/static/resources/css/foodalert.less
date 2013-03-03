@@ -7,6 +7,7 @@
 @bright-blue-light: #a2bbd3;
 @green: #a6af3f; // green
 @green-light: #bfc763; // light green
+@error: #b96b6b; // red
 @width: 796px;
 @font: 'Margarine', sans-serif;
 @footer-height: 60px;
@@ -47,6 +48,9 @@
 	height:@footer-height;
 	bottom:0px;
 	left:0px;
+	-webkit-box-shadow: 0px -3px 4px rgba(67,107,145,0.4);
+	-moz-box-shadow: 0px -3px 4px rgba(67,107,145,0.4);
+	box-shadow: 0px -3px 4px rgba(67,107,145,0.4);
 }
 
 .section-mixin {
@@ -180,13 +184,8 @@ section#favorites {
 	.section-mixin;
 
 	#fav_search {
-		width: @width * 6 / 7;
-		font-size:36px;
-	}
-	
-	#search_button {
-		width: @width / 7 - 10;
-		font-size: 32px;
+		width: @width;
+		font-size:18px;
 	}
 
 	#chosen_fav {
@@ -195,23 +194,17 @@ section#favorites {
 }
 
 footer.fav {
+	background-color: @bright-blue;
+
 	.footer-mixin;
-	line-height: 24px;
-	background-color:@bright-blue;
-	a {
-		text-decoration: none;
-		font-size:24px;
-		color:@light-blue;
-		margin-right:30px;
-		&:hover {
-			color:@light-blue;
-		}
+	.up-button {
+		.button-mixin;
+		margin-top: 4px;
+		float:right;
 	}
-	div {
-		text-align:right;
-		width:@width;
-		height:100%;
-		margin:0 auto;
+	&>div{
+		width: @width;
+		margin: 0 auto;
 	}
 }
 
@@ -234,13 +227,21 @@ footer.index {
 
 #login, 
 #register, 
-#verify {
+#verify,
+#done,
+#stop {
 	.overlay-mixin;
 
 	input {
 		width: 375px;
 		font-size:2.5em;
 		margin:10px;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	/* display: none; <- Crashes Chrome on hover */
+	-webkit-appearance: none;
+	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */ 
 	}
 
 	&>div{
@@ -268,9 +269,21 @@ footer.index {
 				text-align:right;
 			}
 			&.error {
-				color:#FF0000;
+				color:@error;
 				font-style: italic;
 				font-size: .8em;
+			}
+		}
+		.phone {
+			float:left;
+			&.area {
+				width:375/9*3-30px !important;
+			}
+			&.first {
+				width:375/9*3-30px !important;
+			}
+			&.last {
+				width: 375/9*4-30px !important;
 			}
 		}
 
@@ -279,7 +292,9 @@ footer.index {
 
 #login:target,
 #register:target,
-#verify:target {
+#verify:target,
+#done:target,
+#stop:target {
 	.overlay-target-mixin;
 	&>div {
 		opacity: 1;
