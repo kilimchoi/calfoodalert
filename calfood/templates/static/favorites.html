@@ -5,16 +5,24 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="author" content="Benjamin and Steven">
 	<meta name="keywords" content="keywords,here">
-	<link rel="shortcut icon" href="{{ STATIC_URL }}/resources/img/favicon.ico" type="image/vnd.microsoft.icon">
-	<link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro' type='text/css'>
+	<link rel="shortcut icon" href="{{ STATIC_URL }}/resources/img/favicon.png" type="image/vnd.microsoft.icon">
+	<link rel='stylesheet' href='//fonts.googleapis.com/css?family=Margarine|Unkempt' type='text/css'>
 	<link rel='stylesheet' href="{{ STATIC_URL }}/resources/css/normalize.css" type="text/css">
 	<link rel="stylesheet/less" href="{{ STATIC_URL }}/resources/css/foodalert.less" type="text/css">
+	<title>CubGrub - Favorites</title>
 </head>
 <body>
 <header>
-	<h1>CubGrub</h1>
+	<div id="title">
+		<a href="index" title="CubGrub - rawrr!">
+			<img src="{{ STATIC_URL }}resources/img/logo.png" alt="cubgrub logo" title="CubGrub - rawrr!"/>
+		</a>
+		<h1>
+			<a href="index" title="CubGrub - rawrr!">CubGrub</a>
+		</h1>
+	</div>
 	<div class="auth-info">
-		(555) 555-5555 | <a href="#">logout</a>
+		USER TELEPHONE | <a href="#">logout</a>
 	</div>
 </header>
 <section id="favorites">
