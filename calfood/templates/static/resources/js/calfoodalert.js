@@ -13,7 +13,20 @@ $(document).ready(function() {
 		$('#video_cover').hide();
 	});
 	$('.register').click(function() {
-		location.href = "index#verify";
+		var $pwd = $('#register .pwd').val();
+		var $pwd_conf = $('#register .pwd_conf').val();
+		if ($tele.length < 10) {
+			$('#register .error').replaceWith("<p class="error">please enter a 10 digit phone number with only numbers</p>");
+		}
+		else if ($pwd != $pwd_conf) {
+			$('#register .error').replaceWith("<p class="error">passwords do not match</p>");
+		} 
+		else if ($pwd.length < 6) {
+			$('#register .error').replaceWith("<p class="error">length</p>");
+		}
+		else {
+			location.href = "index#verify";			
+		}
 	});
 });
 
@@ -24,7 +37,7 @@ function adjustSize() {
 	$('#landing .video, body, header, #landing, #favorites, footer > div').width(width);
 	$('#landing .video').height(videoHeight);	
 	$('footer').width(footerWidth);
-	$('#landing .left_column, #landing .right_column').width(width/2);
+	$('#landing .left_column, #landing .right_column').width(width/2 - 10);
 }
 
 window.onresize = adjustSize;
