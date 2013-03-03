@@ -13,14 +13,26 @@ $(document).ready(function() {
 		$('#video_cover').hide();
 	});
 	$('.register').click(function() {
-		var $pwd = $('#register .pwd').val();
-		var $pwd_conf = $('#register .pwd_conf').val();
-		if ($pwd != $pwd_conf) {
+		var area = $('#register .area').val();
+		var first = $('#register .first').val();
+		var last = $('#register .last').val();
+		var tele = area + first + last;
+		var pwd = $('#register .pwd').val();
+		var pwd_conf = $('#register .pwd_conf').val();
+		if (tele.length != 10) {
+			$('#register .error').replaceWith("<p class=\"error\">please enter only 10 digits for your phone</p>");
+			return false;
+		}
+		else if (typeof parseInt(tele) != "number") {
+			$('#register .error').replaceWith("<p class=\"error\">please enter only numbers for your phone</p>");
+			return false;
+		}
+		else if (pwd != pwd_conf) {
 			$('#register .error').replaceWith("<p class=\"error\">passwords do not match</p>");
 			return false;
 		} 
-		else if ($pwd.length < 6) {
-			$('#register .error').replaceWith("<p class=\"error\">length</p>");
+		else if (pwd.length < 6) {
+			$('#register .error').replaceWith("<p class=\"error\">please choose a longer password</p>");
 			return false;
 		}
 		else {
@@ -28,13 +40,13 @@ $(document).ready(function() {
 		}
 	});
 	$('.verify').click(function() {
-		var $code = $('#verify .code').val();
-		if ($code.length < 6) {
-			$('#verify .error').replaceWith("<p class=\"error\">length</p>");
+		var code = $('#verify .code').val();
+		if (code.length != 6) {
+			$('#verify .error').replaceWith("<p class=\"error\">please enter only the 6 digits you were sent</p>");
 			return false;
 		}
-		else if ($code.type() != "number" && Math.floor($code) != $code) {
-			$('#verify .error').replaceWith("<p class=\"error\">length</p>");
+		else if (typeof code != "number") {
+			$('#verify .error').replaceWith("<p class=\"error\">please only enter numbers for the code</p>");
 			return false;
 		}
 		else {
