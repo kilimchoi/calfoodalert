@@ -56,8 +56,8 @@
 		{% csrf_token %}
 		{% if pwd_match %}Incorrect login, please try again.{% endif %}
 		<p class="cancel"><a href="#">X</a></p>
-		<input placeholder="(555) 555-5555" type="tel" name="telephone" required></input>
-		<input placeholder="password" type="password" name="pwd" required></input>
+		<input placeholder="(555) 555-5555" type="text" name="telephone" required></input>
+		<input placeholder="password" type="text" name="pwd" required></input>
 		<input type="submit" value="login" name="login"></input>
 		</form>
 	</div>
@@ -68,7 +68,7 @@
 		{% csrf_token %}
 		{% if telephone_register %}This phone number is already in use.{% endif %}
 		<p class="cancel"><a href="#">X</a></p>
-		<input placeholder="(555) 555-5555" type="tel" name="telephone" class="tele" required></input>
+		<input placeholder="(555) 555-5555" type="text" name="telephone" class="tele" required></input>
 		<input placeholder="password" type="password" name="pwd" class="pwd" required></input>
 		<input placeholder="repeat password" type="password" name="pwd_conf" class="pwd_conf" required></input>
 		<input type="submit" value="register" name="register" class="register"></input>
