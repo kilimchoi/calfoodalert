@@ -22,7 +22,7 @@
 		</h1>
 	</div>
 	<div class="auth-info">
-		<a href="#login" class="test">login</a>
+		<a href="#login">login</a>
 	</div>
 </header>
 <section id="landing">
@@ -37,38 +37,38 @@
 	</div>
 	<p>Receive text messages notifying you when your favorite DC meals are being served! Never will you miss a good meal again!</p>
 	<div class="left_column">
-		<p>Living on campus example of a picky and piggy eater.</p>
+		<p>Rachel only eats organic egg frittata for breakfast, but doesn't have time each moring to check which DC is serving it so she can get it on her way to class. Now, Rachel will know exactly where to stop on her morning trip to class.</p>
 	</div>
 	<div class="right_column">
-		<p>Living off campus example of a mucher and a once-in-a-while vistor.</p>
+		<p>Bruno would travel 1000 miles just to eat some fried chicken, but he lives off campus and doesn't check the DC website every day. Now, Bruno will know when </p>
 	</div>
 	
 	<p class="credit">Created by Benjamin Ortiz and Steven Choi</p>
 </section>
 <footer class="index">
 	<div>
-		<div class="button"><a href="#register">sign up</a></div>
+		<div class="reg-button"><a href="#register">sign up</a></div>
 	</div>
 </footer>
 <div id="login">
 	<div>
+		<p class="cancel"><a href="#">X</a></p>
+		<p class="error">{% if pwd_match %}Incorrect login, please try again.{% elif !passwordMatch $}Passwords do not match.{% endif %}</p>
 		<form name="login" method="POST">	
 		{% csrf_token %}
-		{% if pwd_match %}Incorrect login, please try again.{% endif %}
-		<p class="cancel"><a href="#">X</a></p>
-		<input placeholder="(555) 555-5555" type="text" name="telephone" required></input>
-		<input placeholder="password" type="text" name="pwd" required></input>
+		<input placeholder="10 digit phone" type="tel" name="telephone" required></input>
+		<input placeholder="password" type="password" name="pwd" required></input>
 		<input type="submit" value="login" name="login"></input>
 		</form>
 	</div>
 </div>
 <div id="register">
 	<div>
+		<p class="cancel"><a href="#">X</a></p>
+		<p class="error">{% if telephone_register %}This phone number is already in use.{% endif %}</p>
 		<form name="register" method="POST">
 		{% csrf_token %}
-		{% if telephone_register %}This phone number is already in use.{% endif %}
-		<p class="cancel"><a href="#">X</a></p>
-		<input placeholder="(555) 555-5555" type="text" name="telephone" class="tele" required></input>
+		<input placeholder="10 digit phone" type="tel" name="telephone" class="tele" required></input>
 		<input placeholder="password" type="password" name="pwd" class="pwd" required></input>
 		<input placeholder="repeat password" type="password" name="pwd_conf" class="pwd_conf" required></input>
 		<input type="submit" value="register" name="register" class="register"></input>
@@ -77,10 +77,10 @@
 </div>
 <div id="verify">
 	<div>
+		<p class="cancel"><a href="#">X</a></p>
+		<p class="error">{% if verify_fail %}Incorrect code, please try again.{% endif %}</p>
 		<form name="verify" action="#verify" method="POST">
 		{% csrf_token %}
-		{% if verify_fail %}Incorrect code, please try again.{% endif %}
-		<p class="cancel"><a href="#">X</a></p>
 		<p>Check your phone for a code and enter it here.</p>
 		<input placeholder="123456" type="text" name="code" required></input>
 		<input type="submit" value="verify" name="verify"></input>

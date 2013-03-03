@@ -1,10 +1,12 @@
 /* Variables */
 
-@light: #e6e6e6; // light blue
-@dark: #444444; // text color
-@dark-light: #977c55; // brown
-@color: #6b93b9; // bright blue
-@color-light: #a6af3f; // green
+@light-blue: #e6e6e6; // light blue
+@text: #444444; // text color
+@brown: #977c55; // brown
+@bright-blue: #6b93b9; // bright blue
+@bright-blue-light: #a2bbd3;
+@green: #a6af3f; // green
+@green-light: #bfc763; // light green
 @width: 796px;
 @font: 'Margarine', sans-serif;
 @footer-height: 60px;
@@ -55,16 +57,16 @@
 }
 
 .button-mixin {
-	background-color:@color-light;
+	background-color:@green;
 	font-size:24px;
 	padding:10px 20px;
 	a {
-		color:@light;
+		color:@light-blue;
 		text-decoration:none;
 		padding:10px 15px;
 	}
 	&:hover {
-		background-color:@color-light;
+		background-color:@green-light;
 	}
 }
 
@@ -72,35 +74,35 @@
 
 body {
 	font-family: @font;
-	color: @dark;
+	color: @text;
 	width:796px;
 	height:100%;
-	background-color: @light;
+	background-color: @light-blue;
 	margin:0 auto;
 }
 
 a {
-	color:@dark;
+	color:@text;
 	&:hover {
-		color:@dark-light;
+		color:@brown;
 	}
 }
 
 input[type=submit] {
-	background-color:@color;
-	color:@light;
+	background-color:@green;
+	color:@light-blue;
 	border-width:0px;
 	&:hover {
-		background-color:@color-light;
+		background-color:@green-light;
 	}
 }
 
 .auth-info {
 	a {
-		color:@color;
+		color:@bright-blue;
 		text-decoration: none;
 		&:hover {
-			color:@color-light;
+			color:@bright-blue-light;
 			text-decoration: underline;
 
 		}
@@ -128,7 +130,7 @@ header {
 			a {
 				text-decoration: none;
 				&:hover {
-					color: @dark;
+					color: @text;
 				}
 			}
 		}
@@ -194,14 +196,14 @@ section#favorites {
 footer.fav {
 	.footer-mixin;
 	line-height: 24px;
-	background-color:@color;
+	background-color:@bright-blue;
 	a {
 		text-decoration: none;
 		font-size:24px;
-		color:@light;
+		color:@light-blue;
 		margin-right:30px;
 		&:hover {
-			color:@light;
+			color:@light-blue;
 		}
 	}
 	div {
@@ -213,10 +215,10 @@ footer.fav {
 }
 
 footer.index {
-	background-color: @dark-light;
+	background-color: @bright-blue;
 
 	.footer-mixin;
-	.button {
+	.reg-button {
 		.button-mixin;
 		margin-top: 4px;
 		float:right;
@@ -248,7 +250,7 @@ footer.index {
 		width: 400px;
 		margin: 0px auto 0px auto;
 		padding: 10px;
-		background-color:@light;
+		background-color:@light-blue;
 		overflow:hidden;
 		-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
 		-moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
@@ -263,6 +265,11 @@ footer.index {
 			&.cancel {
 				font-size:1em;
 				text-align:right;
+			}
+			&.error {
+				color:#FF0000;
+				font-style: italic;
+				font-size: .8em;
 			}
 		}
 
