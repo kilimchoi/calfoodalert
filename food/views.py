@@ -18,17 +18,29 @@ import mechanize
 import urllib2
 
 def index(request):
-	dict = {'telephone_registered': False, 'pwd_match': False}
+	passwordMatch = False
+	passwordLength = False
+	dict = {}
 	if request.method == "POST":
 		password = request.POST['pwd']
 		tele = request.POST['telephone']
 		tele = tele.encode("utf8")
 		tele = int(tele)
 		password = password.encode("utf8")
-		password = int(password)
-		user = User(telephone = tele, password = password)
+		intPassword = int(password)
+		confirmPwd = request.POST['pwd_conf']
+		intConfirmPwd = int(confirmPwd)
+		if len(password) < 6:
+			passwordLength = False
+		if len(password) >= 6:
+			passwordLength = True
+		if intPassword != intConfirmPwd:
+			passwordMatch = False
+		if intPassword == intConfirmPwd:
+			passwordMatch = True
+		dict = {'telephone_registered': False, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+		user = User(telephone = tele, pwd= password, ver_code = generate_random_code())
 		user.save()
-		user.get_profile().telephone = tele
 		user.set_password(user.pwd)
 	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
 
@@ -36,6 +48,7 @@ def generate_random_code():
 	lst = [random.choice(string.digits) for n in xrange(6)]
 	str = "".join(lst)
 	return str
+
 
 def reset_password(tele, new_pwd):
 	u = User.objects.get(telephone=tele)

@@ -14,6 +14,7 @@ class BigIntegerField(BigIntegerField):
 	
 	def db_type(self):
 		return 'NUMBER(19)' if settings.DATABASE_ENGINE == 'oracle' else 'bigint'
+
 def get_hexdigest(algorithm, salt, raw_password):
 		"""
 		Returns a string of the hexdigest of the given plaintext password and salt
@@ -33,23 +34,17 @@ def get_hexdigest(algorithm, salt, raw_password):
 		raise ValueError("Got unknown password algorithm type in password.")
  
 
-class UserProfile(models.Model):  
-	user = models.ForeignKey(User)
+class User(models.Model):
 	telephone = models.BigIntegerField()
+	pwd = models.BigIntegerField()
 	verified = models.BooleanField()
-	verCode = models.CharField(max_length=6)
-	#other fields here
-	def __str__(self):  
-		return "%s's profile" % self.user  
-	def create_user_profile(sender, instance, created, **kwargs):  
-		if created:  
-			profile, created = UserProfile.objects.get_or_create(user=instance)  
+	ver_code = models.BigIntegerField()
 	def set_password(self, pwd):
 		algo='sha1'
 		salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
 		hsh = get_hexdigest(algo, salt, pwd)
 		self.pwd = '%s$%s$%s' % (algo, salt, hsh)
-	post_save.connect(create_user_profile, sender=User) 
+
 
 
 class Favs(models.Model):

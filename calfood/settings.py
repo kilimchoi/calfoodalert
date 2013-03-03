@@ -11,7 +11,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'food_db',                      # Or path to database file if using sqlite3.
         'USER': 'root',                      # Not used with sqlite3.
         'PASSWORD': 'Cjswo1202',                  # Not used with sqlite3.
@@ -161,3 +161,4 @@ LOGGING = {
         },
     }
 }
+AUTH_PROFILE_MODULE = 'calfood.UserProfile'
