@@ -26,7 +26,7 @@ $(document).ready(function() {
 			$('#register .error').replaceWith("<p class=\"error\">length</p>");
 		}
 		else {
-			location.href = "index#verify";			
+			location.href = "index#verify";	
 		}
 	});
 });
