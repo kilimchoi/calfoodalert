@@ -53,7 +53,7 @@
 <div id="login">
 	<div>
 		<p class="cancel"><a href="#">X</a></p>
-		<p class="error">{% if pwd_match %}Incorrect login, please try again.{% elif !passwordMatch $}Passwords do not match.{% endif %}</p>
+		<p class="error">{% if pwd_match %}Incorrect login, please try again.{% elif not passwordMatch $}Passwords do not match.{% endif %}</p>
 		<form name="login" method="POST">	
 		{% csrf_token %}
 		<input placeholder="10 digit phone" type="tel" name="telephone" required></input>
