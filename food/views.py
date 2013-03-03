@@ -44,6 +44,10 @@ def index(request):
 		user.set_password(user.pwd)
 	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
 
+def favorites(request):
+	dict = {}
+	return render_to_response('static/favorites.html', dict, context_instance=RequestContext(request))
+
 def generate_random_code():
 	lst = [random.choice(string.digits) for n in xrange(6)]
 	str = "".join(lst)
