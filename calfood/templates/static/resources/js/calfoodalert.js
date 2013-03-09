@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 	$('.auth-info').click(function() {
 		document.title = "CubGrub - login";
@@ -72,12 +71,12 @@ $(document).ready(function() {
     	});
 	}
 
-	function searchResult(data) {
-    	$( "#fav_search" ).autocomplete({
-        	source: data
-    	});
-    	return false;
-	}
+function searchResult(data) {
+   	$( "#fav_search" ).autocomplete ({
+       	source: data
+   	});
+}
+
 function adjustSize() {
 	var width = $(window).width() - .3 * $(window).width();
 	var videoHeight = width/2.39;
