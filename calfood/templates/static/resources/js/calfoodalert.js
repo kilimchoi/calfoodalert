@@ -12,6 +12,34 @@ $(document).ready(function() {
 		$('#video_player').show();
 		$('#video_cover').hide();
 	});
+	$('.register').click(function() {
+		var area = $('#register .area').val();
+		var first = $('#register .first').val();
+		var last = $('#register .last').val();
+		var tele = area + first + last;
+		var pwd = $('#register .pwd').val();
+		var pwd_conf = $('#register .pwd_conf').val();	
+		if (tele.length != 10) {
+			humane.log("only as many digits as you have on your paws");
+			return false;
+		}
+		else if (typeof parseInt(tele) != "number") {
+			humane.log("no special characters");
+			return false;
+		}
+		else if (pwd != pwd_conf) {
+			humane.log("passwords do not match");
+		return false;
+		} 
+		else if (pwd.length < 6) {
+			humane.log("please choose a longer password");
+			return false;
+		}
+		else {
+			localStorage.setItem("tele", tele);
+			location.href = "index#verify";	
+		}
+	});
 	$('.verify').click(function() {
 		var code = $('#verify .code').val();
 		if (code.length != 6) {
@@ -26,6 +54,29 @@ $(document).ready(function() {
 			location.href = "favorites";
 		}
 	});
+	$('.login').click(function() {
+		var area = $('#login .area').val();
+		var first = $('#login .first').val();
+		var last = $('#login .last').val();
+		var tele = area + first + last;
+		var pwd = $('#login .pwd').val();
+		if (tele.length != 10) {
+			humane.log("only as many digits as you have on your paws");
+			return false;
+		}
+		else if (typeof parseInt(tele) != "number") {
+			humane.log("no special characters");
+			return false;
+		}
+		else if (pwd.length < 6) {
+			humane.log("please choose a longer password");
+			return false;
+		}
+		else {
+			localStorage.setItem("tele", tele);
+			location.href = "favorites";	
+		}
+	}
 	$('#verify .code').keyup(function(){
 		if($(this).val().length>=$(this)[0].maxLength){
 			$('#verify .verify').focus();
@@ -91,7 +142,7 @@ $(document).on("dblclick", "li.24hrs", function(){
 	var el = $(this);
 	var inside = el.html();
 	el.remove();
-	$.post('api/remove_favorite', inside);
+	$.post('api/remove_favorite', [localstorage.getItem("tele"), inside]);
 	humane.log("unloved", {timeout:400});
 });
 
@@ -106,7 +157,7 @@ function addFav() {
 	$('#chosen_favorites').prepend("<li class=\"24hrs\">" + fav + "</li>");
 	$('#fav_search').val('');
 	humane.log("added", {timeout:500});
-	$.post('api/add_favorite', fav);
+	$.post('api/add_favorite', [localstorage.getItem("tele"), fav]);
 }
 
 function adjustSize() {
