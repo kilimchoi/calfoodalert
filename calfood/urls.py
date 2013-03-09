@@ -6,8 +6,8 @@ from food.views import parse_page, index, register, favorites, get_food
 
 urlpatterns = patterns('',
     ('^$', index),
-	('^index$', index),
-	('^index#register$', index),
+    ('^index$', index),
+    ('^index#register$', index),
     ('^index#verify$', index),
     ('^parse_page', parse_page),
     ('^favorites', favorites),
