@@ -117,11 +117,8 @@ def get_food(request):
 	foods = Menu.objects.filter(food__startswith=str(request.REQUEST['search']))
 	results = []
 	for food in foods:
-		food_json = {}
-		food_json['label'] = food.food
-		results.append(food_json)
-	data = json.dumps(results)
-	resp = request.REQUEST['callback'] + '(' + simplejson.dumps(data) + ');'
+		results.append(food.food)
+	resp = request.REQUEST['callback'] + '(' + simplejson.dumps(results) + ');'
 	return HttpResponse(resp, content_type='application/json')
 
 def register(request):

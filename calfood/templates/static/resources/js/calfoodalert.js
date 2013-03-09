@@ -60,12 +60,12 @@ $(document).ready(function() {
 });
 	function searchOpen() {
     	var search = $('#fav_search').val()
-    	var data = {
+    	var keyword = {
         	search: search
     	};
     	$.ajax({
         	url: 'api/fav_search',
-        	data: data,
+        	data: keyword,
         	dataType: 'jsonp',
         	jsonp: 'callback',
         	jsonpCallback: 'searchResult'
@@ -73,10 +73,10 @@ $(document).ready(function() {
 	}
 
 	function searchResult(data) {
-		console.log(data);
-    	$( "#fav_search" ).autocomplete ({
+    	$( "#fav_search" ).autocomplete({
         	source: data
     	});
+    	return false;
 	}
 function adjustSize() {
 	var width = $(window).width() - .3 * $(window).width();
