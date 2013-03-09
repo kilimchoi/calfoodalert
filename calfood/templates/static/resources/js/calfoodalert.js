@@ -69,10 +69,10 @@ function adjustSize() {
 }
 
 $(function() {
-	$("#fav_search").autocomplete({
-		source: "/api/fav_search/",
-		minLength: 2,
-	});
+  $("#fav_search").autocomplete({
+    source: "/api/fav_search/",
+    minLength: 2,
+  });
 });
 
 window.onresize = adjustSize;
