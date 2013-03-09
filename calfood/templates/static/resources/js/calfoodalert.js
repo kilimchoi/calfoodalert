@@ -12,33 +12,6 @@ $(document).ready(function() {
 		$('#video_player').show();
 		$('#video_cover').hide();
 	});
-	$('.register').click(function() {
-		var area = $('#register .area').val();
-		var first = $('#register .first').val();
-		var last = $('#register .last').val();
-		var tele = area + first + last;
-		var pwd = $('#register .pwd').val();
-		var pwd_conf = $('#register .pwd_conf').val();
-		if (tele.length != 10) {
-			$('#register .error').replaceWith("<p class=\"error\">please enter only 10 digits for your phone</p>");
-			return false;
-		}
-		else if (typeof parseInt(tele) != "number") {
-			$('#register .error').replaceWith("<p class=\"error\">please enter only numbers for your phone</p>");
-			return false;
-		}
-		else if (pwd != pwd_conf) {
-			$('#register .error').replaceWith("<p class=\"error\">passwords do not match</p>");
-			return false;
-		} 
-		else if (pwd.length < 6) {
-			$('#register .error').replaceWith("<p class=\"error\">please choose a longer password</p>");
-			return false;
-		}
-		else {
-			location.href = "index#verify";	
-		}
-	});
 	$('.verify').click(function() {
 		var code = $('#verify .code').val();
 		if (code.length != 6) {
@@ -94,6 +67,13 @@ function adjustSize() {
 	$('footer').width(footerWidth);
 	$('#landing .left_column, #landing .right_column').width(width/2 - 10);
 }
+
+$(function() {
+  $("#fav_search").autocomplete({
+    source: "/api/fav_search/",
+    minLength: 2,
+  });
+});
 
 window.onresize = adjustSize;
 window.onload = adjustSize;

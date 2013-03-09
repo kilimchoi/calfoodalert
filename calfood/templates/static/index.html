@@ -9,6 +9,42 @@
 	<link rel='stylesheet' href='//fonts.googleapis.com/css?family=Margarine|Unkempt' type='text/css'>
 	<link rel='stylesheet' href="{{ STATIC_URL }}/resources/css/normalize.css" type="text/css">
 	<link rel="stylesheet/less" href="{{ STATIC_URL }}/resources/css/foodalert.less" type="text/css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}/resources/css/original.css" type="text/css">
+	<script src="{{ STATIC_URL }}/resources/js/less-1.3.0.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}/resources/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}/resources/js/humane.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}/resources/js/calfoodalert.js" type="text/javascript"></script>
+	<script>
+	$(document).ready(function() {
+		$('.register').click(function() {
+			var area = $('#register .area').val();
+			var first = $('#register .first').val();
+			var last = $('#register .last').val();
+			var tele = area + first + last;
+			var pwd = $('#register .pwd').val();
+			var pwd_conf = $('#register .pwd_conf').val();
+			if (tele.length != 10) {
+				humane.log("please enter only 10 digits for your phone");
+				return false;
+			}
+			else if (typeof parseInt(tele) != "number") {
+				humane.log("please enter only numbers for your phone");
+				return false;
+			}
+			else if (pwd != pwd_conf) {
+				humane.log("passwords do not match");
+			return false;
+			} 
+			else if (pwd.length < 6) {
+				humane.log("please choose a longer password");
+				return false;
+			}
+			else {
+				location.href = "index#verify";	
+			}
+		});
+	});
+	</script>
 	<title>CubGrub</title>
 </head>
 <body>
@@ -53,11 +89,10 @@
 <div id="login">
 	<div>
 		<p class="cancel"><a href="#">X</a></p>
-		<p class="error">{% if passwordMatch %}Passwords do not match.{% endif %}</p>
 		<form name="login" method="POST">	
 		{% csrf_token %}
-		<input placeholder="555" type="number" name="area" class="phone area" maxlength="3" required></input>
-		<input placeholder="555" type="number" name="first" class="phone first" maxlength="3" required></input>
+		<input placeholder="555" type="number" name="area" class="phone area" maxlength="3" required></input>-
+		<input placeholder="555" type="number" name="first" class="phone first" maxlength="3" required></input>-
 		<input placeholder="5555" type="number" name="last" class="phone last" maxlength="4" required></input>
 		<input placeholder="password" type="password" name="pwd" class="pwd" required></input>
 		<input type="submit" value="login" name="login"></input>
@@ -67,8 +102,7 @@
 <div id="register">
 	<div>
 		<p class="cancel"><a href="#">X</a></p>
-		<p class="error">{% if telephone_register %}This phone number is already in use.{% endif %}</p>
-		<form name="register" method="POST" onSubmit="return false">
+		<form name="register" method="POST">
 		{% csrf_token %}
 		<input placeholder="555" type="number" name="area" class="phone area" maxlength="3" required></input>
 		<input placeholder="555" type="number" name="first" class="phone first" maxlength="3" required></input>
@@ -82,7 +116,6 @@
 <div id="verify">
 	<div>
 		<p class="cancel"><a href="#">X</a></p>
-		<p class="error">{% if verify_fail %}Incorrect code, please try again.{% endif %}</p>
 		<form name="verify" action="#verify" method="POST">
 		{% csrf_token %}
 		<p>Check your phone for a code and enter it here.</p>
@@ -91,10 +124,5 @@
 		</form>
 	</div>
 </div>
-
-<script src="{{ STATIC_URL }}/resources/js/less-1.3.0.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}/resources/js/jquery-1.9.1.min.js"></script>
-<script src="{{ STATIC_URL }}/resources/js/calfoodalert.js" type="text/javascript"></script>
-
 </body>
 </html>
