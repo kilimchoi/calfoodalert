@@ -76,7 +76,7 @@ $(document).ready(function() {
 			localStorage.setItem("tele", tele);
 			location.href = "favorites";	
 		}
-	}
+	});
 	$('#verify .code').keyup(function(){
 		if($(this).val().length>=$(this)[0].maxLength){
 			$('#verify .verify').focus();
@@ -142,7 +142,7 @@ $(document).on("dblclick", "li.24hrs", function(){
 	var el = $(this);
 	var inside = el.html();
 	el.remove();
-	$.post('api/remove_favorite', [localstorage.getItem("tele"), inside]);
+	$.post('api/remove_favorite', [localStorage.getItem("tele"), inside]);
 	humane.log("unloved", {timeout:400});
 });
 
@@ -151,13 +151,66 @@ function searchResult(data) {
        	source: data
    	});
 }
-
+localStorage.setItem("tele", 8053455180)
 function addFav() {
 	var fav = $('#fav_search').val();
+	var telephone = localStorage.getItem("tele");
 	$('#chosen_favorites').prepend("<li class=\"24hrs\">" + fav + "</li>");
 	$('#fav_search').val('');
 	humane.log("added", {timeout:500});
-	$.post('api/add_favorite', [localstorage.getItem("tele"), fav]);
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie != '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
+	var csrftoken = getCookie('csrftoken');
+
+	function csrfSafeMethod(method) {
+	    // these HTTP methods do not require CSRF protection
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	function sameOrigin(url) {
+	    // test that a given url is a same-origin URL
+	    // url could be relative or scheme relative or absolute
+	    var host = document.location.host; // host + port
+	    var protocol = document.location.protocol;
+	    var sr_origin = '//' + host;
+	    var origin = protocol + sr_origin;
+	    // Allow absolute or scheme relative URLs to same origin
+	    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+	        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+	        // or any other URL that isn't scheme relative or absolute i.e relative.
+	        !(/^(\/\/|http:|https:).*/.test(url));
+	}
+	$.ajaxSetup({
+	beforeSend: function(xhr, settings) {
+	    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+	        // Only send the token to relative URLs i.e. locally.
+	        xhr.setRequestHeader("X-CSRFToken",
+	                             $('input[name="csrfmiddlewaretoken"]').val());
+	    }
+	}
+	});
+	var postdata = {
+		'favorites': fav,
+		'telephone': telephone
+	}
+	$.post('api/add_favorite', {
+		data: postdata
+	});
+	
+	
+	
 }
 
 function adjustSize() {
@@ -171,6 +224,7 @@ function adjustSize() {
 	$('#favorites #fav_search').width(width/7 * 6 - 10);
 	$('#favorites #fav_add').width(width/7 - 30);
 }
+
 
 
 window.onresize = adjustSize;

@@ -118,7 +118,6 @@ favorite_foods = []
 def get_food(request):
 	pressed = False
 	if request.method == "POST":
-		print "enters"
 		foods = ""
 		post = request.POST
 		food = post['data[favorites]']
@@ -129,7 +128,6 @@ def get_food(request):
 		telephone = telephone.encode('utf8')
 		telephone = int(telephone)
 		user = User.objects.get(telephone=telephone)
-		print "user: ", user
 		for food in favorite_foods:
 			foods = foods + " " + food
 		fav = Favs(user=user, favorites=foods)
@@ -145,11 +143,12 @@ def get_food(request):
 def send_food_notification(request, tele):
 	voice = Voice()
 	voice.login('calfoodalert@gmail.com', 'hackjamfoodalert')
-	recipient = User.objects.get(telephone = tele)
-	favs = Favs.objects.get(user = recipient)
+	recipient = User.objects.get(telephone=tele)
+	favs = Favs.objects.get(user=recipient)
 	foods = favs.favorites
 	message = 'Your favorite food %s is served at %s' % (foods, "clarkkerr")
 	voice.send_sms(tele, message)
+	print('Sent')
 
 def register(request):
 	render_to_response(index.html)
