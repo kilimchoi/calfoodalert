@@ -71,20 +71,6 @@ $(document).ready(function() {
     	});
 	}
 
-function searchOpen() {
-   	var search = $('#fav_search').val()
-   	var data = {
-       	search: search
-   	};
-   	$.ajax({
-       	url: 'api/fav_search',
-       	data: data,
-       	dataType: 'jsonp',
-       	jsonp: 'callback',
-       	jsonpCallback: 'searchResult'
-   	});
-}
-
 function searchResult(data) {
    	$( "#fav_search" ).autocomplete ({
        	source: data
