@@ -182,14 +182,38 @@ section#landing {
 
 section#favorites {
 	.section-mixin;
+	font-family: @font;
 
 	#fav_search {
-		width: @width;
+		font-family: @font;
+		width: @width/7*6;
 		font-size:18px;
 	}
 
-	#chosen_fav {
+	#fav_add {
+		font-family: @font;
+		width: @width/7;
+	}
 
+	p.warning {
+		font-style:italic;
+		color: @text + 100;
+	}
+
+	#chosen_favorites {
+		font-family: @font;
+		list-style-type:none !important;
+		li {
+			margin-left:-40px;
+			margin-top:20px;
+			padding-left:0px;
+			width: @width;
+			border-style:dashed;
+			border-width:0px;
+			border-bottom-width:1px;
+			border-color: @green-light;
+			cursor:pointer;
+		}
 	}
 }
 
