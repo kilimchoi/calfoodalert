@@ -39,13 +39,15 @@ class User(models.Model):
 	pwd = models.BigIntegerField()
 	verified = models.BooleanField()
 	ver_code = models.BigIntegerField()
+	telephone_registered = models.BooleanField()
 	def set_password(self, pwd):
 		algo='sha1'
 		salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
 		hsh = get_hexdigest(algo, salt, pwd)
 		self.pwd = '%s$%s$%s' % (algo, salt, hsh)
 
-
+class Menu(models.Model):
+	food = models.CharField(max_length=100)
 
 class Favs(models.Model):
 	user = models.ForeignKey(User)

@@ -11,7 +11,7 @@ from googlevoice import Voice, util
 from googlevoice.util import input
 import re
 from bs4 import BeautifulSoup
-from models import User
+from models import User, Menu, Favs
 import random
 import string
 import mechanize
@@ -20,12 +20,18 @@ import urllib2
 def index(request):
 	passwordMatch = False
 	passwordLength = False
-	dict = {}
+	telephone_registered = False
+	dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
 	if request.method == "POST":
 		password = request.POST['pwd']
-		tele = request.POST['telephone']
-		tele = tele.encode("utf8")
-		tele = int(tele)
+		area = request.POST['area']
+		first = request.POST['first']
+		last = request.POST['last']
+		area = area.encode("utf8")
+		first = first.encode("utf8")
+		last = last.encode("utf8")
+		telephone = area + "" + first + "" + last
+		tele = int(telephone)
 		password = password.encode("utf8")
 		intPassword = int(password)
 		confirmPwd = request.POST['pwd_conf']
@@ -38,14 +44,22 @@ def index(request):
 			passwordMatch = False
 		if intPassword == intConfirmPwd:
 			passwordMatch = True
-		dict = {'telephone_registered': False, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
-		if passwordMatch and passwordLength:
-			user = User(telephone = tele, pwd= password, ver_code = generate_random_code())
-			user.save()
-			user.set_password(user.pwd)
-			return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
-		else:
+		dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+		user_count = User.objects.filter(telephone = tele).count()
+		if user_count >= 1:
+			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
 			return HttpResponseRedirect("")
+		else: 
+			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+			if passwordMatch and passwordLength:
+				telephone_registered = True
+				user = User(telephone = tele, pwd= password, ver_code = generate_random_code(), telephone_registered = telephone_registered)
+				user.save()
+				user.set_password(user.pwd)
+				send_verification(request, tele)
+				return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
+			else:
+				return HttpResponseRedirect("")
 	return render_to_response('static/index.html', dict, context_instance=RequestContext(request))
 
 def favorites(request):
@@ -53,7 +67,7 @@ def favorites(request):
 	return render_to_response('static/favorites.html', dict, context_instance=RequestContext(request))
 
 def generate_random_code():
-	lst = [random.choice(string.digits) for n in xrange(6)]
+	lst = [random.choice(string.digits) for n in xrange(7)]
 	str = "".join(lst)
 	return str
 
@@ -70,8 +84,9 @@ def parse_page(request):
 	lists = list(br.links(text_regex=re.compile("")))
 	counter = 0
 	name_counter = 0
-	place_list = []
+	place_list = {}
 	for lst in lists:
+		food = []
 		if lst.text != "Click To View[IMG]Menu Details" and lst.text != "[IMG]" and lst.text != "sitemap" and lst.text != "dc tabling" and lst.text != "jobs" and lst.text != "comment cards" and lst.text != "contact us" and lst.text != "dining@berkeley.edu" and lst.text != "Nutritive Analysis" and lst.text != "" and lst.text != "cal club" and lst.text != "cal care packs" and lst.text != "student meal plans" and lst.text != "faculty/staff meal plans":
 			location_name = lst.attrs[0][1].split('&')
 			counter = 0
@@ -83,20 +98,44 @@ def parse_page(request):
 					for n in name:
 						if name_counter == 1:
 							place = n.replace('+', '')
-							food_tuple = (lst.text, place)
-							print food_tuple
+							if place in place_list:
+								food = place_list[place]
+								food.append(lst.text)
+								place_list[place] = food
+							else:
+								food.append(lst.text)
+								place_list[place] = food
 						name_counter += 1
 				counter += 1
-		place_list = []
+	for k, foods in place_list.items():
+		for food in foods:
+			f = Menu(food=food)
+			f.save()
 
+def get_food(request):
+	if request.is_ajax():
+		q = request.GET.get('term', '')
+		foods = Menu.objects.all()
+		results = []
+		for food in foods:
+			food_json = {}
+			food_json['label'] = food.food
+			results.append(food_json)
+		data = json.dumps(results)
+	else:
+		data = 'fail'
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)
+	
 def register(request):
 	render_to_response(index.html)
 	
 
-def sendtext(request):
+def send_verification(request, tele):
 	voice = Voice()
 	voice.login('calfoodalert@gmail.com', 'hackjamfoodalert')
-	phoneNumber = 8053455180
-	message = 'hi ben this works'
-	voice.send_sms(phoneNumber, message)
+	recipient = User.objects.get(telephone = tele)
+	ver_code = recipient.ver_code
+	message = 'Your verification code is %d' % (ver_code)
+	voice.send_sms(tele, message)
 	print('Message Sent')
