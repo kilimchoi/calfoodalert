@@ -45,13 +45,13 @@ def index(request):
 			passwordMatch = False
 		if intPassword == intConfirmPwd:
 			passwordMatch = True
-		dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+		dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength, 'telephone': tele}
 		user_count = User.objects.filter(telephone = tele).count()
 		if user_count >= 1:
-			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength, 'telephone': tele}
 			return HttpResponseRedirect("")
 		else: 
-			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength, 'telephone': tele}
 			if passwordMatch and passwordLength:
 				telephone_registered = True
 				user = User(telephone = tele, pwd= password, ver_code = generate_random_code(), telephone_registered = telephone_registered)
