@@ -73,10 +73,10 @@ $(document).ready(function() {
 	}
 
 	function searchResult(data) {
-		console.log(data);
     	$( "#fav_search" ).autocomplete({
         	source: data
     	});
+    	return false;
 	}
 function adjustSize() {
 	var width = $(window).width() - .3 * $(window).width();
