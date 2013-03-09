@@ -57,6 +57,19 @@ $(document).ready(function() {
 		}
 	});
 });
+	function searchOpen() {
+    	var search = $('#fav_search').val()
+    	var keyword = {
+        	search: search
+    	};
+    	$.ajax({
+        	url: 'api/fav_search',
+        	data: keyword,
+        	dataType: 'jsonp',
+        	jsonp: 'callback',
+        	jsonpCallback: 'searchResult'
+    	});
+	}
 
 function searchOpen() {
    	var search = $('#fav_search').val()
