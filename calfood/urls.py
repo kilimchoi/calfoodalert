@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     ('^favorites', favorites),
     ('^index#register_value$', index),
     ('^api/fav_search$', get_food),
-
+    ('^api/add_favorite$', get_food)
     # Examples:
     # url(r'^$', 'calfood.views.home', name='home'),
     # url(r'^calfood/', include('calfood.foo.urls')),
