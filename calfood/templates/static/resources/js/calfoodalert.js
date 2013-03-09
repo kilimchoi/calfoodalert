@@ -76,7 +76,7 @@ $(document).ready(function() {
 			localStorage.setItem("tele", tele);
 			location.href = "favorites";	
 		}
-	}
+	});
 	$('#verify .code').keyup(function(){
 		if($(this).val().length>=$(this)[0].maxLength){
 			$('#verify .verify').focus();
