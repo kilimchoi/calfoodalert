@@ -17,7 +17,7 @@ import random
 import string
 import mechanize
 import urllib2
-
+place_list = {}
 def index(request):
 	passwordMatch = False
 	passwordLength = False
@@ -85,7 +85,6 @@ def parse_page(request):
 	lists = list(br.links(text_regex=re.compile("")))
 	counter = 0
 	name_counter = 0
-	place_list = {}
 	for lst in lists:
 		food = []
 		if lst.text != "Click To View[IMG]Menu Details" and lst.text != "[IMG]" and lst.text != "sitemap" and lst.text != "dc tabling" and lst.text != "jobs" and lst.text != "comment cards" and lst.text != "contact us" and lst.text != "dining@berkeley.edu" and lst.text != "Nutritive Analysis" and lst.text != "" and lst.text != "cal club" and lst.text != "cal care packs" and lst.text != "student meal plans" and lst.text != "faculty/staff meal plans":
@@ -114,12 +113,29 @@ def parse_page(request):
 			f.save()
 
 def get_food(request):
+	if request.method == "POST":
+		favorite_food = request.POST['favorite_food']
+		telephone = request.POST['telephone']
+		user = User.objects.get(telephone = telephone)
+		fav = Favs(user=user, favorites=favorite_food)
+		fav.save()
 	foods = Menu.objects.filter(food__startswith=str(request.REQUEST['search']))
 	results = []
 	for food in foods:
 		results.append(food.food)
 	resp = request.REQUEST['callback'] + '(' + simplejson.dumps(results) + ');'
 	return HttpResponse(resp, content_type='application/json')
+
+def send_food_notification(request, tele):
+	voice = Voice()
+	voice.login('calfoodalert@gmail.com', 'hackjamfoodalert')
+	recipient = User.objects.get(telephone = tele)
+	favs = Favs.objects.get(user = recipient)
+	foods = favs.favorites
+	dininghalls = ""
+	dininghalls += k for k, v in place_list if v in foods
+	message = 'Your favorite food %s are served at %s' % (foods, dininghalls)
+	voice.send_sms(tele, message)
 
 def register(request):
 	render_to_response(index.html)
