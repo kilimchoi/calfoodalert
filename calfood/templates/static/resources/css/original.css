@@ -25,8 +25,12 @@ body {
   min-height: 40px;
   padding: 10px;
   text-align: center;
-  background-color: #444444;
+  background-color: #B48120;
   color: #e6e6e6;
+	-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+	-moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+	box-shadow: 0px 2px 7px rgba(0,0,0,0.8);
+
 }
 .humane p,
 .humane-original p,

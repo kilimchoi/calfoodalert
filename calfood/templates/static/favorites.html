@@ -10,11 +10,10 @@
 	<link rel='stylesheet' href="{{ STATIC_URL }}/resources/css/normalize.css" type="text/css">
 	<link rel="stylesheet/less" href="{{ STATIC_URL }}/resources/css/foodalert.less" type="text/css">
 	<link rel="stylesheet" href="{{ STATIC_URL }}/resources/css/original.css" type="text/css">
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}/resources/css/jquery-ui.css" type="text/css" media="all" />
 	<script src="{{ STATIC_URL }}/resources/js/less-1.3.0.min.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script src="{{ STATIC_URL }}/resources/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}/resources/js/jquery-ui-1.10.1	.js" type="text/javascript"></script>
 	<script src="{{ STATIC_URL }}/resources/js/humane.min.js" type="text/javascript"></script>
 	<script src="{{ STATIC_URL }}/resources/js/calfoodalert.js" type="text/javascript"></script>
 	<title>CubGrub - Favorites</title>
@@ -35,18 +34,22 @@
 </header>
 <section id="favorites" class="ui-widget">
 	<h2>Choose your favorites:</h2>
-	<input placeholder="begin typing your favorite foods here" type="search" name="fav" id="fav_search" onkeyup="searchOpen()"></input>
+	<input placeholder="type, then press enter" type="search" name="fav" id="fav_search" onkeyup="searchOpen()"></input>
+	<input type="submit" value="add" name="add" id="fav_add"></input>
+	<p class="warning">Note: Double click on a food below to stop receiving notifications for it.</p>
 	<ul id="chosen_favorites">
+	{% if has_favorites %} {{ LIST_OF_FAVORITES }} {% endif %}
 	</ul>
 </section>
 <footer class="fav">
 	<div>
-		<div class="up-button"><a href="#done">update</a></div>
+		<div class="up-button"><a href="#done">finish</a></div>
 	</div>
 </footer>
 <div id="done">
 	<div>
-		<p>you're all done!</p>
+		<p>You're all done, enjoy!</p>
+		<span>logout</span>
 	</div>
 </div>
 <div id="stop">
