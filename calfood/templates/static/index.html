@@ -15,7 +15,6 @@
 	<script src="{{ STATIC_URL }}/resources/js/calfoodalert.js" type="text/javascript"></script>
 	<script> 
 	$(document).ready(function() {
-		
 		$('.register').click(function() {
 			var area = $('#register .area').val();
 			var first = $('#register .first').val();
@@ -25,10 +24,6 @@
 			var pwd_conf = $('#register .pwd_conf').val();
 			if (tele.length != 10) {
 				$('#register .error').replaceWith("<p class=\"error\">Please enter only 10 digits for your phone</p>");
-				return false;
-			}
-			if (registered) {
-				$('#register .error').replaceWith("<p class=\"error\">Duplicate</p>");
 				return false;
 			}
 			else if (typeof parseInt(tele) != "number") {
