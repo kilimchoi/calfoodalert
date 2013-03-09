@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
+from django.utils import simplejson
 from datetime import datetime
 import pprint
 import json
@@ -113,20 +114,16 @@ def parse_page(request):
 			f.save()
 
 def get_food(request):
-	if request.is_ajax():
-		q = request.GET.get('term', '')
-		foods = Menu.objects.all()
-		results = []
-		for food in foods:
-			food_json = {}
-			food_json['label'] = food.food
-			results.append(food_json)
-		data = json.dumps(results)
-	else:
-		data = 'fail'
-	mimetype = 'application/json'
-	return HttpResponse(data, mimetype)
-	
+	foods = Menu.objects.filter(food__startswith=str(request.REQUEST['search']))
+	results = []
+	for food in foods:
+		food_json = {}
+		food_json['label'] = food.food
+		results.append(food_json)
+	data = json.dumps(results)
+	resp = request.REQUEST['callback'] + '(' + simplejson.dumps(data) + ');'
+	return HttpResponse(resp, content_type='application/json')
+
 def register(request):
 	render_to_response(index.html)
 	

@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 	$('.auth-info').click(function() {
 		document.title = "CubGrub - login";
@@ -57,7 +58,26 @@ $(document).ready(function() {
 		}
 	});
 });
+	function searchOpen() {
+    	var search = $('#fav_search').val()
+    	var data = {
+        	search: search
+    	};
+    	$.ajax({
+        	url: 'api/fav_search',
+        	data: data,
+        	dataType: 'jsonp',
+        	jsonp: 'callback',
+        	jsonpCallback: 'searchResult'
+    	});
+	}
 
+	function searchResult(data) {
+		console.log(data);
+    	$( "#fav_search" ).autocomplete ({
+        	source: data
+    	});
+	}
 function adjustSize() {
 	var width = $(window).width() - .3 * $(window).width();
 	var videoHeight = width/2.39;
@@ -68,12 +88,6 @@ function adjustSize() {
 	$('#landing .left_column, #landing .right_column').width(width/2 - 10);
 }
 
-$(function() {
-  $("#fav_search").autocomplete({
-    source: "/api/fav_search/",
-    minLength: 2,
-  });
-});
 
 window.onresize = adjustSize;
 window.onload = adjustSize;
