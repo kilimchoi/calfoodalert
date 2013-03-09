@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.utils import simplejson
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 import pprint
 import json
 from googlevoice import Voice, util 
@@ -17,6 +18,7 @@ import random
 import string
 import mechanize
 import urllib2
+
 place_list = {}
 def index(request):
 	passwordMatch = False
@@ -45,13 +47,13 @@ def index(request):
 			passwordMatch = False
 		if intPassword == intConfirmPwd:
 			passwordMatch = True
-		dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+		dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength, 'telephone': tele}
 		user_count = User.objects.filter(telephone = tele).count()
 		if user_count >= 1:
-			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength, 'telephone': tele}
 			return HttpResponseRedirect("")
 		else: 
-			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength}
+			dict = {'telephone_registered': telephone_registered, 'passwordMatch': passwordMatch, 'passwordLength': passwordLength, 'telephone': tele}
 			if passwordMatch and passwordLength:
 				telephone_registered = True
 				user = User(telephone = tele, pwd= password, ver_code = generate_random_code(), telephone_registered = telephone_registered)
@@ -112,13 +114,25 @@ def parse_page(request):
 			f = Menu(food=food)
 			f.save()
 
+favorite_foods = []
 def get_food(request):
+	pressed = False
 	if request.method == "POST":
-		favorite_food = request.POST['favorite_food']
-		telephone = request.POST['telephone']
-		user = User.objects.get(telephone = telephone)
-		fav = Favs(user=user, favorites=favorite_food)
+		foods = ""
+		post = request.POST
+		food = post['data[favorites]']
+		food = food.encode('utf8')
+		food = str(food)
+		favorite_foods.append(food)
+		telephone = post['data[telephone]']
+		telephone = telephone.encode('utf8')
+		telephone = int(telephone)
+		user = User.objects.get(telephone=telephone)
+		for food in favorite_foods:
+			foods = foods + " " + food
+		fav = Favs(user=user, favorites=foods)
 		fav.save()
+		send_food_notification(request, telephone)
 	foods = Menu.objects.filter(food__startswith=str(request.REQUEST['search']))
 	results = []
 	for food in foods:
@@ -132,9 +146,7 @@ def send_food_notification(request, tele):
 	recipient = User.objects.get(telephone = tele)
 	favs = Favs.objects.get(user = recipient)
 	foods = favs.favorites
-	dininghalls = ""
-	dininghalls += k for k, v in place_list if v in foods
-	message = 'Your favorite food %s are served at %s' % (foods, dininghalls)
+	message = 'Your favorite food %s is served at %s' % (foods, "clarkkerr")
 	voice.send_sms(tele, message)
 
 def register(request):
