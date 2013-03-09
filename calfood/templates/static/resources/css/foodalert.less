@@ -1,12 +1,15 @@
 /* Variables */
 
-@light: #f1f1f1;
-@dark: #444444;
-@dark-light: #666666;
-@color: #449644;
-@color-light: #669666;
+@light-blue: #C4D6FC; // light blue
+@text: #444444; // text color
+@brown: #C9A35C; // brown
+@bright-blue: #6281C0; // bright blue
+@bright-blue-light: #2552AB;
+@green: #2552AB; // green
+@green-light: #6281C0; // light green
+@error: #b96b6b; // red
 @width: 796px;
-@font: 'Source Sans Pro', sans-serif;
+@font: 'Margarine', sans-serif;
 @footer-height: 60px;
 @page-bottom: @footer-height + 30px;
 
@@ -21,7 +24,13 @@
 	top: 0px;
 	padding: 0px;
 	z-index: 99;
+	opacity: 0;
 	background: rgba(68,68,68,0.4);
+	-webkit-transition: opacity 0.3s ease;
+	-moz-transition: opacity 0.3s ease;
+	-o-transition: opacity 0.3s ease;
+	-ms-transition: opacity 0.3s ease;
+	transition: opacity 0.3s ease;
 }
 
 .overlay-target-mixin {
@@ -30,6 +39,7 @@
 	bottom: 0px;
 	right: 0px;
 	padding-top:90px;
+	opacity: 1;
 }
 
 .footer-mixin {
@@ -38,6 +48,9 @@
 	height:@footer-height;
 	bottom:0px;
 	left:0px;
+	-webkit-box-shadow: 0px -3px 4px rgba(67,107,145,0.4);
+	-moz-box-shadow: 0px -3px 4px rgba(67,107,145,0.4);
+	box-shadow: 0px -3px 4px rgba(67,107,145,0.4);
 }
 
 .section-mixin {
@@ -48,16 +61,16 @@
 }
 
 .button-mixin {
-	background-color:@color;
+	background-color:@green;
 	font-size:24px;
 	padding:10px 20px;
 	a {
-		color:@light;
+		color:@light-blue;
 		text-decoration:none;
 		padding:10px 15px;
 	}
 	&:hover {
-		background-color:@color-light;
+		background-color:@green-light;
 	}
 }
 
@@ -65,39 +78,42 @@
 
 body {
 	font-family: @font;
-	color: @dark;
+	color: @text;
 	width:796px;
 	height:100%;
-	background-color: @light;
+	background-color: @light-blue;
 	margin:0 auto;
 }
 
 a {
-	color:@dark;
+	color:@text;
 	&:hover {
-		color:@dark-light;
+		color:@brown;
 	}
 }
 
 input[type=submit] {
-	background-color:@color;
-	color:@light;
+	background-color:@green;
+	color:@light-blue;
 	border-width:0px;
 	&:hover {
-		background-color:@color-light;
+		background-color:@green-light;
 	}
 }
 
 .auth-info {
 	a {
-		color:@color;
+		color:@bright-blue;
+		text-decoration: none;
 		&:hover {
-			color:@color-light;
+			color:@bright-blue-light;
+			text-decoration: underline;
+
 		}
 	}
 	position:absolute;
 	top:10px;
-	right:10px;
+	right:0px;
 }
 
 /* Page specific */
@@ -105,75 +121,129 @@ input[type=submit] {
 header {
 	width: @width;
 	position:relative;
-	margin-bottom:40px;
+	margin-bottom:0px;
+	#title {
+		text-align: center;
+		img {
+			margin-top: 15px;
+		}
+		h1 {
+			font-size: 48px;
+			font-family: 'Unkempt', cursive;
+			margin: 0px;
+			a {
+				text-decoration: none;
+				&:hover {
+					color: @text;
+				}
+			}
+		}
+	}
 }
 
 section#landing {
 	.section-mixin;
+	.video {
+		img {
+			width: 100%;
+			height:100%;
+			cursor: pointer;
+		}
+		#video_player {
+			display: none;
+			object, embed {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
 	p {
-		float:right;
-		width:400px;
 		font-size:24px;
-		padding-top:170px;
+		text-indent: 30px;
 	}
-	img {
+	.left_column {
 		float:left;
+		p {
+			font-size: 16px;
+			margin-top: 0px;
+		}	
 	}
-	.button {
-		.button-mixin;
-		float:right;
+	.right_column {
+		float: right;
+		p {
+			font-size: 16px;
+			margin-top: 0px;
+		}
+	}
+	.credit {
+		font-size: 14px;
 	}
 }
 
 section#favorites {
 	.section-mixin;
+	font-family: @font;
 
 	#fav_search {
-		width: @width * 6 / 7;
-		font-size:36px;
-	}
-	
-	#search_button {
-		width: @width / 7 - 10;
-		font-size: 32px;
+		font-family: @font;
+		width: @width/7*6;
+		font-size:18px;
 	}
 
-	#chosen_fav {
+	#fav_add {
+		font-family: @font;
+		width: @width/7;
+	}
 
+	p.warning {
+		font-style:italic;
+		color: @text + 100;
+	}
+
+	#chosen_favorites {
+		font-family: @font;
+		list-style-type:none !important;
+		li {
+			margin-left:-40px;
+			margin-top:20px;
+			padding-left:0px;
+			width: @width;
+			border-style:dashed;
+			border-width:0px;
+			border-bottom-width:1px;
+			border-color: @green-light;
+			cursor:pointer;
+		}
 	}
 }
 
 footer.fav {
+	background-color: @bright-blue;
+
 	.footer-mixin;
-	line-height: 24px;
-	background-color:@color;
-	a {
-		text-decoration: none;
-		font-size:24px;
-		color:@light;
-		margin-right:30px;
-		&:hover {
-			color:@light;
-		}
+	.up-button {
+		.button-mixin;
+		margin-top: 4px;
+		float:right;
 	}
-	div {
-		text-align:right;
-		width:@width;
-		height:100%;
-		margin:0 auto;
+	&>div{
+		width: @width;
+		margin: 0 auto;
 	}
 }
 
 footer.index {
+	background-color: @bright-blue;
+
 	.footer-mixin;
-	background-color: @dark-light;
-	color:@dark;
-	div {
-		text-align:right;
-		line-height:@footer-height;
-		width:@width;
-		height:100%;
-		margin:0 auto;
+	.reg-button {
+		.button-mixin;
+		margin-top: 4px;
+		float:right;
+	}
+	&>div{
+		width: @width;
+		margin: 0 auto;
 	}
 }
 
@@ -181,13 +251,21 @@ footer.index {
 
 #login, 
 #register, 
-#verify {
+#verify,
+#done,
+#stop {
 	.overlay-mixin;
 
 	input {
 		width: 375px;
 		font-size:2.5em;
 		margin:10px;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	/* display: none; <- Crashes Chrome on hover */
+	-webkit-appearance: none;
+	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */ 
 	}
 
 	&>div{
@@ -198,7 +276,7 @@ footer.index {
 		width: 400px;
 		margin: 0px auto 0px auto;
 		padding: 10px;
-		background-color:@light;
+		background-color:@light-blue;
 		overflow:hidden;
 		-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
 		-moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
@@ -214,6 +292,23 @@ footer.index {
 				font-size:1em;
 				text-align:right;
 			}
+			&.error {
+				color:@error;
+				font-style: italic;
+				font-size: .8em;
+			}
+		}
+		.phone {
+			float:left;
+			&.area {
+				width:375/9*3-30px !important;
+			}
+			&.first {
+				width:375/9*3-30px !important;
+			}
+			&.last {
+				width: 375/9*4-30px !important;
+			}
 		}
 
 	}
@@ -221,7 +316,9 @@ footer.index {
 
 #login:target,
 #register:target,
-#verify:target {
+#verify:target,
+#done:target,
+#stop:target {
 	.overlay-target-mixin;
 	&>div {
 		opacity: 1;
