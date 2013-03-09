@@ -118,7 +118,6 @@ favorite_foods = []
 def get_food(request):
 	pressed = False
 	if request.method == "POST":
-		print "enters"
 		foods = ""
 		post = request.POST
 		food = post['data[favorites]']
@@ -129,7 +128,6 @@ def get_food(request):
 		telephone = telephone.encode('utf8')
 		telephone = int(telephone)
 		user = User.objects.get(telephone=telephone)
-		print "user: ", user
 		for food in favorite_foods:
 			foods = foods + " " + food
 		fav = Favs(user=user, favorites=foods)
