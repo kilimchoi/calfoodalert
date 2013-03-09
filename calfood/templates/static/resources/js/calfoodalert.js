@@ -86,6 +86,7 @@ $(document).ready(function() {
         	jsonpCallback: 'searchResult'
     	});
 	}
+
 $(document).on("dblclick", "li.24hrs", function(){ 
 	var el = $(this);
 	var inside = el.html();
@@ -93,6 +94,7 @@ $(document).on("dblclick", "li.24hrs", function(){
 	$.post('api/remove_favorite', inside);
 	humane.log("unloved", {timeout:400});
 });
+
 function searchResult(data) {
    	$( "#fav_search" ).autocomplete ({
        	source: data
